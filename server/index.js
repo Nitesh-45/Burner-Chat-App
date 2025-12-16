@@ -18,22 +18,27 @@ const server = http.createServer(app);
 
 // Configuration
 const PORT = process.env.PORT || 3001;
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+
+// CORS - Allow both production (Vercel) and development (localhost)
+const ALLOWED_ORIGINS = [
+  'https://burner-chat.vercel.app',
+  'http://localhost:5173'
+];
 
 // ==========================================
 // SOCKET.IO SETUP WITH CORS
 // ==========================================
 const io = new Server(server, {
   cors: {
-    origin: CLIENT_URL,           // Allow requests from Vite dev server
-    methods: ['GET', 'POST'],     // Allowed HTTP methods
-    credentials: true             // Allow credentials if needed
+    origin: ALLOWED_ORIGINS,        // Allow both Vercel and localhost
+    methods: ['GET', 'POST'],       // Allowed HTTP methods
+    credentials: true               // Allow credentials if needed
   }
 });
 
 // Express middleware
 app.use(cors({
-  origin: CLIENT_URL,
+  origin: ALLOWED_ORIGINS,
   credentials: true
 }));
 app.use(express.json());
