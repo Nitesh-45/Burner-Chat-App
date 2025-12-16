@@ -33,7 +33,14 @@ const io = new Server(server, {
     origin: ALLOWED_ORIGINS,        // Allow both Vercel and localhost
     methods: ['GET', 'POST'],       // Allowed HTTP methods
     credentials: true               // Allow credentials if needed
-  }
+  },
+  // Transport configuration for cloud hosting (Render)
+  transports: ['polling', 'websocket'],
+  // Ping settings to keep connection alive
+  pingTimeout: 60000,
+  pingInterval: 25000,
+  // Allow upgrades from polling to websocket
+  allowUpgrades: true
 });
 
 // Express middleware
